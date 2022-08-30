@@ -7,5 +7,4 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
   },
   mode: "development",
-  allowedHosts: ["all"],
 };
