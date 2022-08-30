@@ -8,3 +8,11 @@ module.exports = {
   },
   mode: "development",
 };
+
+const productonConfig = merge([
+  {
+    output: {
+      publicPath: "/rxjs-wordle/",
+    },
+  },
+]);
