@@ -9,13 +9,16 @@ import ENGLISH_WORDS_LIST from "./englishWordList.json";
 
 const letterRows = document.getElementsByClassName("letter-row");
 const message = document.getElementById("message-text");
+const keyBoard = document.getElementById("keyboard");
 let userAnswer = [];
 const getRandomWord = () =>
   WORDS_LIST[Math.floor(Math.random() * WORDS_LIST.length)];
 const rightWord = getRandomWord();
-console.log(rightWord);
 const onKeyDown$ = fromEvent(document, "keydown");
-
+const onKeyChange$ = fromEvent(
+  keyBoard.getElementsByTagName("button"),
+  "click"
+);
 let letterIndex = 0;
 let letterRowIndex = 0;
 
@@ -85,6 +88,20 @@ const checkWord = {
     }
   },
 };
+onKeyChange$.subscribe((event) => {
+  let key = event.target.textContent;
+  let idKey = event.target.id;
+  console.log(idKey);
+  if (key != "") {
+    insertLetter.next({ key });
+  }
+  if (idKey === "delete") {
+    deleteLetter.next({ key: "Backspace" });
+  }
+  if (idKey === "enter") {
+    checkWord.next({ key: "Enter" });
+  }
+});
 onKeyDown$.subscribe(insertLetter);
 onKeyDown$.subscribe(deleteLetter);
 onKeyDown$.subscribe(checkWord);

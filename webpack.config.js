@@ -7,12 +7,5 @@ module.exports = {
     path: path.resolve(__dirname, "public"),
   },
   mode: "development",
+  allowedHosts: ["all"],
 };
-
-const productonConfig = merge([
-  {
-    output: {
-      publicPath: "/rxjs-wordle/",
-    },
-  },
-]);
