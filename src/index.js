@@ -8,16 +8,18 @@ import WORDS_LIST from "./spanishWordsList.json";
 
 const letterRows = document.getElementsByClassName("letter-row");
 const message = document.getElementById("message-text");
-const keyBoard = document.getElementById("keyboard");
+const keyBoard = document
+  .getElementById("keyboard")
+  .getElementsByTagName("button");
+
+const keyboarArray = Array.from(keyBoard);
+console.log(keyboarArray);
 let userAnswer = [];
 const getRandomWord = () =>
   WORDS_LIST[Math.floor(Math.random() * WORDS_LIST.length)];
 const rightWord = getRandomWord();
 const onKeyDown$ = fromEvent(document, "keydown");
-const onKeyChange$ = fromEvent(
-  keyBoard.getElementsByTagName("button"),
-  "click"
-);
+const onKeyChange$ = fromEvent(keyBoard, "click");
 let letterIndex = 0;
 let letterRowIndex = 0;
 
@@ -25,8 +27,8 @@ const userWinOrLose$ = new Subject();
 const insertLetter = {
   next: ({ key }) => {
     if (key.length === 1 && key.match(/[a-z]/i)) {
-      console.log(key);
-      console.log(letterRows);
+      // console.log(key);
+      // console.log(letterRows);
       let letterBox =
         Array.from(letterRows)[letterRowIndex].children[letterIndex];
       letterBox.textContent = key;
@@ -54,43 +56,46 @@ const deleteLetter = {
 
 const checkWord = {
   next: ({ key }) => {
-    if (key === "Enter") {
+    if (key === "Enter" && userAnswer.length === 5) {
       const rightWordArray = Array.from(rightWord);
       for (let i = 0; i < 5; i++) {
         let letterColor = "";
+        let keyColor = "";
         let letterBox = Array.from(letterRows)[letterRowIndex].children[i];
-        console.log(letterBox);
         let letterPositon = Array.from(rightWord).indexOf(
           userAnswer[i].toUpperCase()
         );
-        console.log(letterPositon);
+        let keyboardLetter = keyboarArray.filter(
+          (k) => k.textContent === userAnswer[i].toUpperCase()
+        )[0];
 
         if (letterPositon === -1) {
           letterColor = "letter-grey";
+          keyColor = "key-gray";
         } else {
           if (rightWordArray[i] === userAnswer[i].toUpperCase()) {
             letterColor = "letter-green";
+            keyColor = "key-green";
           } else {
             letterColor = "letter-yellow";
+            keyColor = "key-yellow";
           }
         }
         letterBox.classList.add(letterColor);
+        keyboardLetter.classList.add(keyColor);
       }
-      if (userAnswer.length === 5) {
-        if (userAnswer.join("").toUpperCase() === rightWord) {
-          userWinOrLose$.next("win");
-        }
-        letterIndex = 0;
-        userAnswer = [];
-        letterRowIndex++;
+      if (userAnswer.join("").toUpperCase() === rightWord) {
+        userWinOrLose$.next("win");
       }
+      letterIndex = 0;
+      userAnswer = [];
+      letterRowIndex++;
     }
   },
 };
 onKeyChange$.subscribe((event) => {
   let key = event.target.textContent;
   let idKey = event.target.id;
-  console.log(idKey);
   if (key != "") {
     insertLetter.next({ key });
   }
