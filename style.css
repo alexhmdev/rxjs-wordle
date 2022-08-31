@@ -163,12 +163,12 @@ body {
   margin: 2px;
   box-shadow: 0px 0px 1px 1px gray;
 }
-.key-green {
-  background-color: var(--green);
-  color: white;
-}
 .key-yellow {
   background-color: var(--yellow);
+  color: white;
+}
+.key-green {
+  background-color: var(--green);
   color: white;
 }
 
