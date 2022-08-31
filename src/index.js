@@ -5,7 +5,6 @@
  */
 import { fromEvent, Subject } from "rxjs";
 import WORDS_LIST from "./spanishWordsList.json";
-import ENGLISH_WORDS_LIST from "./englishWordList.json";
 
 const letterRows = document.getElementsByClassName("letter-row");
 const message = document.getElementById("message-text");
@@ -105,7 +104,7 @@ onKeyChange$.subscribe((event) => {
 onKeyDown$.subscribe(insertLetter);
 onKeyDown$.subscribe(deleteLetter);
 onKeyDown$.subscribe(checkWord);
-userWinOrLose$.subscribe((value) => {
+userWinOrLose$.subscribe(() => {
   let letterBox = Array.from(letterRows)[letterRowIndex];
   console.log(letterBox);
   for (let i = 0; i < 5; i++) {
@@ -113,3 +112,12 @@ userWinOrLose$.subscribe((value) => {
     message.textContent = "¡Ganaste!";
   }
 });
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker
+      .register("/serviceWorker.js")
+      .then((res) => console.log("service worker registered"))
+      .catch((err) => console.log("service worker not registered", err));
+  });
+}

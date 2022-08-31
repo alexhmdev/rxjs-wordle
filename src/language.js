@@ -1,5 +1,5 @@
 // The active locale
-let locale = "en";
+let locale = "es";
 
 // We can have as many locales here as we want,
 // and use any locales we want. We have English
